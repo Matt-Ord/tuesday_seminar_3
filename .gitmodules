@@ -1,0 +1,3 @@
+[submodule "cambridge_polylux_theme"]
+	path = cambridge_polylux_theme
+	url = https://github.com/Matt-Ord/cambridge_polylux_theme.git
