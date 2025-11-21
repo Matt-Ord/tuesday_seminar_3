@@ -23,21 +23,14 @@ def generate_oscillatory_signal(
     Generates an oscillatory random signal using an Auto-Regressive AR(1) process.
     X(t) = phi * X(t-1) + epsilon(t).
     """
-    # 1. Generate random noise (white noise)
-    noise: NDArray[np.float64] = np.random.normal(
-        loc=0, scale=noise_std_dev, size=num_steps
-    )
+    rng = np.random.default_rng(seed=42)
+    noise: NDArray[np.float64] = rng.normal(loc=0, scale=noise_std_dev, size=num_steps)
 
-    # 2. Initialize the signal array
     signal: NDArray[np.float64] = np.zeros(num_steps)
-
-    # 3. Generate the AR(1) process
     signal[0] = noise[0] / np.sqrt(1 - phi**2)
 
     for t in range(1, num_steps):
         signal[t] = phi * signal[t - 1] + noise[t]
-
-    # Add an offset
     signal += 100.0
 
     return signal
@@ -49,14 +42,13 @@ def apply_lowpass_filter(
     """
     Applies a low-pass Butterworth filter to smooth the signal.
     """
-    # Normalized frequency (cutoff / Nyquist). Nyquist is 0.5 assuming fs=1.0
-    nyquist = 0.5
-    normal_cutoff = cutoff / nyquist
+
+    normal_cutoff = cutoff / 0.5
 
     # Design the filter
     b, a = scipy.signal.butter(order, normal_cutoff, btype="low", analog=False)
 
-    # Apply the filter using filtfilt (zero-phase filtering) to avoid phase shift
+    # Apply the filter using zero-phase filtering to avoid phase shift
     smoothed_data: NDArray[np.float64] = scipy.signal.filtfilt(b, a, data)
     return smoothed_data
 
@@ -98,7 +90,7 @@ def plot_signal() -> None:
         axis="both", which="both", length=0, labelleft=False, labelbottom=False
     )
     # ax.set_xlabel("Time", fontsize=32)
-    # ax.set_ylabel("Field Operator", fontsize=32)
+    ax.set_ylabel(r"$\hat{\Phi}(t)$", rotation="horizontal", fontsize=32, ha="right")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     fig.tight_layout()

@@ -5,6 +5,9 @@
         "ghcr.io/devcontainers/features/rust:1": {
             "version": "latest",
             "profile": "default"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
         }
     },
     "customizations": {
@@ -20,9 +23,10 @@
             "extensions": [
                 "myriad-dreamin.tinymist",
                 "astral-sh.ty",
-                "charliermarsh.ruff"
+                "charliermarsh.ruff",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     },
-    "onCreateCommand": "sudo apt-get update && sudo apt-get install fontconfig pkg-config -y && cargo install --locked typst-cli && sudo mkdir -p /usr/share/fonts/custom && sudo cp fonts/* /usr/share/fonts/custom/ && sudo fc-cache -fv"
+    "onCreateCommand": "npm install -g cspell && sudo apt-get update && sudo apt-get install fontconfig pkg-config -y && cargo install --locked typst-cli && sudo mkdir -p /usr/share/fonts/custom && sudo cp fonts/* /usr/share/fonts/custom/ && sudo fc-cache -fv"
 }
