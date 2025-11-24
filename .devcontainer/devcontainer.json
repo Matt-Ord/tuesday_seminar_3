@@ -17,8 +17,7 @@
                 "editor.codeActionsOnSave": {
                     "source.fixAll": "always"
                 },
-                "tinymist.lint.enabled": true,
-                "tinymist.exportPdf": "onSave"
+                "tinymist.lint.enabled": true
             },
             "extensions": [
                 "myriad-dreamin.tinymist",

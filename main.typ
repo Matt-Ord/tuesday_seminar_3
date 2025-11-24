@@ -1,9 +1,10 @@
 #import "@preview/polylux:0.4.0": slide as plSlide, toolbox
-#import "./cambridge_polylux_theme/lib.typ": camDarkBlue, camLightBlue, slide
+#import "./cambridge_polylux_theme/lib.typ": camBlue, camDarkBlue, camLightBlue, camSlate4, logo, slide
 #import "@preview/mannot:0.3.1": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 
 
+#logo.update(image("cambridge_polylux_theme/assets/cam-logo-colour-preferred.svg"))
 
 #set page(
   paper: "presentation-16-9",
@@ -29,7 +30,7 @@
 #slide[
   = Outline
 
-  When we model diffusion we don't deal with the environment
+  When we model classical diffusion we don't deal with the environment
   directly - we treat interactions as a random process
 
   - Classically, these interactions appear as a stochastic
@@ -54,26 +55,57 @@
     +
     mark(hat(H)_"int", tag: #<interaction_hamiltonian>, color: camDarkBlue)
   $
-  The interaction described by $hat(H)_"int"$ is in general
-  very complex - we can't keep track of these processes explicitly
-
-  The core idea of the Langevin equation is that we can replace the microscopic
-  description of the environment with a stochastic force
-
-
   #annot(<system_hamiltonian>, pos: bottom + left, dx: -4em, dy: -0.3em, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    stroke: camDarkBlue,
+    fill: camDarkBlue,
   )[System]]
   #annot(<environment_hamiltonian>, pos: top + left, dy: -0.4em, dx: -1em, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    stroke: camDarkBlue,
+    fill: camDarkBlue,
   )[Environment]]
   #annot(<interaction_hamiltonian>, pos: right, dx: 1em)[#text(
     font: "Open Sans",
-    stroke: camDarkBlue,
+    fill: camDarkBlue,
     weight: "regular",
   )[Interaction]]
+  #grid(
+    columns: (70%, 30%),
+    [
+      $hat(H)_"int"$ can describe a
+      very complex interaction - we can't keep track of these processes explicitly
+
+      We can replace the microscopic description of interactions
+      with a stochastic process
+    ],
+    [
+      #box(
+        width: 100%,
+        height: 5em,
+        inset: (top: -4em, left: -3em),
+        // outset: -10pt,
+        [
+          #scale(
+            diagram(
+              node((0, 0), text("System", fill: camSlate4), radius: 3.5em, fill: camBlue),
+              node((1, 1.5), text("Environment", fill: camSlate4), radius: 3.5em, fill: camBlue),
+              edge(
+                (0, 0),
+                (1, 1.5),
+                "<|-|>",
+                label: text($hat(H)_"int"$, size: 2em),
+                stroke: stroke(paint: camDarkBlue, thickness: 2pt),
+              ),
+            ),
+            40%,
+          )
+        ],
+      )
+
+    ],
+  )
+
+
+
 
 ])
 
@@ -87,48 +119,62 @@
     $
   ]
   // TODO: plot demonstarting force from linear V(x)
-  The particle is described by the Langevin equation, or a Hamiltonian
-  #align(center, block(
-    fill: camLightBlue,
-    inset: 10pt,
-    radius: 5pt,
-    below: 15pt,
+  The particle is described by the Langevin equation, which corresponds
+  to a classical Hamiltonian with a linear interaction
+  #grid(
+    columns: (35%, 65%),
+    column-gutter: 0pt,
+    [
+      #align(center, diagram(
+        node((1.5, 0.25), radius: 1em, fill: camDarkBlue),
+        edge(
+          (1.5, 0.25),
+          (3, 0.25),
+          "-|>",
+          stroke: (paint: camDarkBlue, thickness: 2pt),
+          label: $F = -frac(d V, d x)$,
+        ),
+        edge((0, 0), (3, 1), "-", stroke: camDarkBlue),
+      ))
+    ],
     [
       #set text(size: 14pt)
-      $
-        frac(d p, d t) = - frac(d V(x), d x) - frac(1, m) integral_0^t d s frac(alpha(t-s), k_b T) p(s) + F(t)
-      $
-      $
-        H = frac(p^2, 2m) + U(x) + sum_i (frac(p_i^2, 2) + frac(1, 2) omega_i^2 x_i^2) - mark(x, tag: #<linear_interaction>) sum_i sqrt(gamma_i) x_i
-      $  #annot(<linear_interaction>, pos: top + right, dy: -16pt, dx: 4em, leader-connect: "elbow")[#text(
-        font: "Open Sans",
-        stroke: camDarkBlue,
-        weight: "regular",
-      )[Linear interaction]]
+      #align(center, [
+        // $
+        //   frac(d p, d t) = - frac(d V(x), d x) - frac(1, m) integral_0^t d s frac(alpha(t-s), k_b T) p(s) + F(t)
+        // $
+        $
+          H = frac(p^2, 2m) + U(x) + sum_i (frac(p_i^2, 2) + frac(1, 2) omega_i^2 x_i^2) - mark(x, tag: #<linear_interaction>) sum_i sqrt(gamma_i) x_i
+        $  #annot(<linear_interaction>, pos: bottom + left, dy: 16pt, leader-connect: "elbow")[#text(
+          font: "Open Sans",
+          stroke: camDarkBlue,
+          weight: "regular",
+        )[Linear interaction]]])
     ],
-  ))
+  )
 ])
 
 
 #slide(type: "light", [
   == A Hamiltonian as a Stochastic Process
-  So how do we write down a Hamiltonian that looks stochastic?
-
-  We need to use the interaction picture
+  The Hamiltonian only looks stochastic if we use the interaction picture
 
   #align(center, block(
-    fill: camLightBlue,
+    fill: none,
     inset: 10pt,
     radius: 5pt,
     below: 15pt,
     [
       #set text(size: 14pt)
       $
-        hat(H) arrow.r.double hat(H)_"int" ("t")
+        #ket($Psi$)arrow.r.double exp(frac(i t, planck) (hat(H)_s + hat(H)_e)) #ket($Psi$)
         quad
-        #ket($Psi$) arrow.r.double exp(frac(i t, planck) (hat(H)_s + hat(H)_e)) #ket($Psi$)
+        i planck partial_t#(ket($Psi(t)$)) = hat(H)_"int" ("t")#ket($Psi(t)$)
       $],
   ))
+
+  This removes the explicit contributions
+  of $hat(H)_e$ from the hamiltonian.
 
 
   We can write the remaining Hamiltonian as a sum of field operators $hat(Phi)_i (t)$
@@ -153,36 +199,20 @@
         ],
         annot(<field_operator>, pos: right, dy: -24pt)[#text(
           font: "Open Sans",
-          stroke: camDarkBlue,
+          fill: camDarkBlue,
           weight: "regular",
         )[Field operator]],
       )
     ],
     image("changing_field_operator.svg", height: 4em),
   ))
-  // #stack(
-  //   dir: ltr,
-  //   spacing: 10em,
-  //   [$
-  //     hat(H) = sum_i hat(A)_i (t) mark(hat(Phi)_i (t), tag: #<field_operator>)
-  //   $],
-  //   image("changing_field_operator.svg", height: 3em),
-  // )
-  // #annot(<field_operator>, pos: top + right)[#text(
-  //   font: "Open Sans",
-  //   stroke: camDarkBlue,
-  //   weight: "regular",
-  // )[Field operator]]
-  // #image("changing_field_operator.svg", height: 8em)
-  // TODO: Plot of random process
-  // TODO: Mention of gaussian process
 
 ])
 
 #slide(type: "light", [
   == The Caldeira Leggett Model
 
-  If we replace each term in this Hamiltonian with operators we get the Caldeira-Leggett model.
+  If we replace each term in the classical Hamiltonian with operators we get the Caldeira-Leggett model.
 
   We have a single system operator $hat(A) (t) = hat(x) (t)$ and a field operator
   $
@@ -191,16 +221,79 @@
 
   We can characterize the environment operators in the same way as before
   $
-    #expect($hat(Phi) (t) hat(Phi) (s)$) = alpha(t-s) = integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) n_b (omega)exp(i omega (t-s))
+    #expect($hat(Phi) (t) hat(Phi) (s)$) _e = alpha(t-s) = integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) #markrect($n_b (omega)$, tag: <replaces_kbt>, fill: camLightBlue, stroke: none)exp(i omega (t-s))
   $
-  // # TODO: Highlight difference between classical and quantum alpha
 
 ])
 
 #slide(type: "light", [
   == Classical Environments interacting with Quantum Systems
 
-  TODO: issues with naive approach of converting classical to quantum
+  The correllation function $alpha(t-s)$ is the same - but we replace
+  $
+    frac(k_b T, planck omega) arrow n_b (omega) = (exp(frac(planck omega, k_b T)) - 1)^(-1)
+  $
+  #grid(
+    columns: (75%, 25%),
+    [
+      Detailed balance is lost if we directly couple a quantum and
+      classical system [1,2]
+
+      Classical markovian environments (with $gamma(omega) = frac(2 m lambda omega^2, pi)$) are non markovian at finite temperatures
+    ],
+    [
+      #scale(
+        diagram(
+          edge((0, 0), (2, 0), "-", stroke: (paint: camDarkBlue, thickness: 4pt)),
+          edge((0, 2), (2, 2), "-", stroke: (paint: camDarkBlue, thickness: 4pt)),
+
+          edge(
+            (0.2, 0),
+            (0.2, 2),
+            "-|>",
+            stroke: camDarkBlue,
+            label: $exp(frac(planck omega, k_b T))$,
+            label-angle: left,
+          ),
+          edge(
+            (1.8, 2),
+            (1.8, 0),
+            "-|>",
+            stroke: camDarkBlue,
+            label: $exp(-frac(planck omega, k_b T))$,
+            label-angle: right,
+          ),
+        ),
+        80%,
+      )
+    ],
+  )
+
+
+
+
+  // TODO: DIAGRAM OF DETAILED BALANCE
+  #place(
+    bottom + left,
+    rect(
+      fill: none,
+      stroke: none,
+      inset: 8pt,
+      width: 100%,
+      [
+        #set text(size: 8pt)
+        #set par(leading: 0.5em)
+
+        *[1]* Priya V. Parandekar and John C. Tully, “Detailed Balance in Ehrenfest Mixed Quantum-Classical Dynamics,” Journal of Chemical Theory and Computation 2, no. 2 (March 2006): 229–235.
+
+        *[2]* Adolfo Bastida et al., “A Modified Ehrenfest Method That Achieves Boltzmann Quantum State Populations,” Chemical Physics Letters 417, no. 1 (January 9, 2006): 53–57.
+      ],
+    ),
+  )
+
+
+
+
 
 ])
 
@@ -224,12 +317,17 @@
     $
   ]
   For the linear force model we have
-  #[
+  #place(bottom + center, dy: 1em, [
     #set text(size: 20pt)
     $
-      expect(hat(Phi)(x,t)hat(Phi)(x',t'))_e = -frac(1, 4) |x - x'|^2 alpha(t-t')
+      expect(hat(Phi)(x,t)hat(Phi)(x',t'))_e = -frac(1, 4) mark(|x - x'|^2, tag: #<small_delta_x>) alpha(t-t')
     $
-  ]
+    #annot(<small_delta_x>, pos: top, dy: -12pt, dx: 100pt, leader-connect: "elbow")[#text(
+      font: "Open Sans",
+      fill: camDarkBlue,
+      weight: "regular",
+    )[Small width wavepacket]]
+  ])
   //  TODO: annotate and mention small delta x expansion
 
 ])
@@ -244,85 +342,121 @@
   // TODO: Annotate terms
   The electrons will also scatter off an adsorbate
   $
-    hat(H)_"int" = sum_(k, k') V_(k, k') hat(c)_k^dagger hat(c)_(k') hat(X)
+    hat(H)_"int" = integral_x hat(rho)_s (x) sum_(k, k') exp(i(q_k - q_(k'))x) tilde(V)(k- k') hat(c)_k^dagger hat(c)_(k')
   $
 
-  Write down the Frolich Hamiltonian
-  derive an expression for alpha
-  To simulate this we need Quantum Field theory!!!
+  From here we can identify the field operators, and characterize the environment
 
 ])
 #slide(type: "light", [
   == Zeroth Order
 
   #grid(
-    columns: (auto, auto),
+    columns: (75%, 25%),
     [
       If we ignore interactions, there is only a single process which contributes
 
       At low temperatures, scattering only happens in a thin shell around the fermi surface
 
-      If we take $|x - x'| arrow.r 0$ we get the classical spectrum
-      $
-        gamma(omega) = omega^2 frac(2k_f^2m_e^2, (2 pi)^6planck^4) integral d^2 Omega_k d^2 Omega_(k') |V(k- k')|^2|k - k'|^2
-      $
+
 
 
     ],
     [
-      #diagram(
-        node((0, 0), radius: 0.2em, fill: camDarkBlue),
-        edge((0, 0), (0, 0), bend: -170deg, stroke: camDarkBlue),
-        node((0.8, 0), radius: 0.2em, fill: camDarkBlue),
-        edge((0.8, 0), (0.8, 0), bend: -170deg, stroke: camDarkBlue),
-      )
+      #box(
+        width: 100%,
+        height: 2em,
+        inset: (top: 1em, left: 2em),
+        scale(
+          diagram(
+            node((0, 0)),
+            node((0.1, 0.5)),
+            node((0.9, 0.5)),
+            node((1, 0)),
+            edge((0.1, 0.5), (0.9, 0.5), "-|>-", stroke: camDarkBlue, bend: 60deg),
+            edge((0.1, 0.5), (0.9, 0.5), "-<|-", stroke: camDarkBlue, bend: -60deg),
 
-      #diagram(
-        node((0, 0)),
-        edge((0, 0), (1, 0), "->-", stroke: camDarkBlue),
-        node((1, 0)),
-        node((0, 0.3)),
-        edge((0, 0.3), (1, 0.3), "-<-", stroke: camDarkBlue),
-        node((1, 0.3)),
+            edge((0.1, 0.5), (0.9, 0.5), "--|>--", stroke: camDarkBlue),
+            edge((0, 0.1), (0.1, 0.5), "--|>--", stroke: camDarkBlue),
+            edge((0.9, 0.5), (1, 0.1), "--|>--", stroke: camDarkBlue),
+          ),
+          200%,
+        ),
       )
-      // TODO: plot fermi sphere with arrows
     ],
   )
-
+  In the small displacement limit $|x - x'| arrow.r 0$ we get ohmic friction
+  $
+    gamma(omega) = omega^2 frac(2k_f^4m_e^2, (2 pi)^6planck^4) integral d^2 Omega_k d^2 Omega_(k') |V(k_f (k- k'))|^2|k - k'|^2
+  $
 
 
 ])
 
 #slide(type: "light", [
   == Second Order
+  #box(
+    width: 75%,
+    [
+      Including electron-phonon interactions is more difficult
 
-  Including electron-phonon interactions is much more difficult
+      We need to make use of perturbation theory to expand in
+      orders of the interaction Hamiltonian
 
-  #stack(
-    dir: ltr,
-    spacing: 1em,
-    diagram(
-      node((0.5, 0.2), radius: 0.2em, fill: camDarkBlue),
-      node((0.5, 0.8), radius: 0.2em, fill: camDarkBlue),
-      edge((0, 0), (0.5, 0.2), "->-", stroke: camDarkBlue),
-      edge((0.5, 0.2), (1, 0), "->-", stroke: camDarkBlue),
-      edge((0.5, 0.2), (0.5, 0.8), "~", stroke: camDarkBlue),
-      edge((0, 1), (0.5, 0.8), "-<-", stroke: camDarkBlue),
-      edge((0.5, 0.8), (1, 1), "-<-", stroke: camDarkBlue),
-    ),
+      These contributions lead to non ohmic friction - memory is stored as displacement of the lattice
+    ],
+  )
 
-    diagram(
-      node((0.2, 0.5), radius: 0.2em, fill: camDarkBlue),
-      node((0.8, 0.5), radius: 0.2em, fill: camDarkBlue),
-      edge((0, 0), (0.2, 0.5), "->-", stroke: camDarkBlue),
-      edge((0.8, 0.5), (1, 0), "->-", stroke: camDarkBlue),
-      edge((0.2, 0.5), (0.8, 0.5), "~", stroke: camDarkBlue),
-      edge((0, 1), (0.2, 0.5), "-<-", stroke: camDarkBlue),
-      edge((0.8, 0.5), (1, 1), "-<-", stroke: camDarkBlue),
+  Memory effects are likely to be more significant when they occur over timescales similar to the system dynamics
+
+
+  #place(
+    top + center,
+    dx: 12em,
+    dy: 2.5em,
+    stack(
+      dir: ttb,
+      spacing: 1em,
+      diagram(
+        node((0, 0)),
+        node((0.1, 0.3)),
+        node((0.9, 0.3)),
+        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: camDarkBlue),
+        edge((0, 0), (0.1, 0.3), "--|>--", stroke: camDarkBlue),
+        edge((0.9, 0.3), (1, 0), "--|>--", stroke: camDarkBlue),
+
+
+        node((0.5, 0.5), radius: 0.2em, fill: camDarkBlue),
+        node((0.5, 0.8), radius: 0.2em, fill: camDarkBlue),
+
+        edge((0.1, 0.3), (0.5, 0.5), "-|>-", stroke: camDarkBlue),
+        edge((0.5, 0.5), (0.9, 0.3), "-|>-", stroke: camDarkBlue),
+        edge((0.5, 0.5), (0.5, 0.8), "~", stroke: camDarkBlue),
+        edge((0.1, 0.3), (0.5, 0.8), "-<|-", stroke: camDarkBlue, bend: -30deg),
+        edge((0.5, 0.8), (0.9, 0.3), "-<|-", stroke: camDarkBlue, bend: -30deg),
+      ),
+
+      diagram(
+        node((0, 0)),
+        node((0.1, 0.3)),
+        node((0.9, 0.3)),
+        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: camDarkBlue),
+        edge((0, 0), (0.1, 0.3), "--|>--", stroke: camDarkBlue),
+        edge((0.9, 0.3), (1, 0), "--|>--", stroke: camDarkBlue),
+
+        node((0.2, 0.7), radius: 0.2em, fill: camDarkBlue),
+        node((0.8, 0.7), radius: 0.2em, fill: camDarkBlue),
+
+        edge((0.1, 0.3), (0.2, 0.7), "-|>-", stroke: camDarkBlue, bend: 60deg),
+        edge((0.8, 0.7), (0.9, 0.3), "-|>-", stroke: camDarkBlue, bend: 60deg),
+        edge((0.2, 0.7), (0.8, 0.7), "~", stroke: camDarkBlue),
+        edge((0.1, 0.3), (0.2, 0.7), "-<|-", stroke: camDarkBlue, bend: -60deg),
+        edge((0.8, 0.7), (0.9, 0.3), "-<|-", stroke: camDarkBlue, bend: -60deg),
+      ),
     ),
   )
 
-  To do this, we will need to use Quantum Field Theory!
+
 
 
 
@@ -333,9 +467,40 @@
 #slide(type: "light", [
   == Master Equations and Field Operators
 
-  These characteristic functions show up in the master equations ...
+  The characterization of field operators is not just useful for
+  comparing environments - they show up in the master equations!
 
+  They also show up as memory in the stochastic Schrodinger equation [1]
+  $
+    partial_t ket(psi) = -i hat(A) ( mark(phi(t), tag: #<hermitian_process>) + integral_0^t d s mark(G(t-s), tag: #<correllation>) frac(delta, delta phi(s))) ket(psi)
+  $
 
+  #annot(<hermitian_process>, pos: bottom + left, dy: 24pt, leader-connect: "elbow")[#text(
+    font: "Open Sans",
+    fill: camDarkBlue,
+    weight: "regular",
+  )[Hermitian random process]]
+
+  #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-connect: "elbow")[#text(
+    font: "Open Sans",
+    fill: camDarkBlue,
+    weight: "regular",
+  )[Correlation Function]]
+  #place(
+    bottom + left,
+    rect(
+      fill: none,
+      stroke: none,
+      inset: 8pt,
+      width: 100%,
+      [
+        #set text(size: 8pt)
+        #set par(leading: 0.5em)
+
+        *[1]* L. Diosi and L. Ferialdi, “General Non-Markovian Structure of Gaussian Master and Stochastic Schrodinger Equations” Phys.Rev.Lett. 113 (2014) 200403-(5).
+      ],
+    ),
+  )
 
 
 ])
