@@ -1,10 +1,10 @@
 #import "@preview/polylux:0.4.0": slide as plSlide, toolbox
-#import "./cambridge_polylux_theme/lib.typ": camBlue, camDarkBlue, camLightBlue, camSlate4, logo, slide
+#import "./cambridge_polylux_theme/lib.typ": cam-blue, cam-dark-blue, cam-light-blue, cam-slate-4, logo, slide
 #import "@preview/mannot:0.3.1": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 
 
-#logo.update(image("cambridge_polylux_theme/assets/cam-logo-colour-preferred.svg"))
+#logo.update(image("cam-logo-colour-preferred.svg"))
 
 #set page(
   paper: "presentation-16-9",
@@ -49,23 +49,23 @@
   A general quantum system is described by a Hamiltonian $hat(H)$ which can be split into three parts
   $
     hat(H) =
-    mark(hat(H)_s, tag: #<system_hamiltonian>, color: camDarkBlue)
+    mark(hat(H)_s, tag: #<system_hamiltonian>, color: #cam-dark-blue)
     +
-    mark(hat(H)_e, tag: #<environment_hamiltonian>, color: camDarkBlue)
+    mark(hat(H)_e, tag: #<environment_hamiltonian>, color: #cam-dark-blue)
     +
-    mark(hat(H)_"int", tag: #<interaction_hamiltonian>, color: camDarkBlue)
+    mark(hat(H)_"int", tag: #<interaction_hamiltonian>, color: #cam-dark-blue)
   $
   #annot(<system_hamiltonian>, pos: bottom + left, dx: -4em, dy: -0.3em, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    fill: camDarkBlue,
+    fill: cam-dark-blue,
   )[System]]
   #annot(<environment_hamiltonian>, pos: top + left, dy: -0.4em, dx: -1em, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    fill: camDarkBlue,
+    fill: cam-dark-blue,
   )[Environment]]
   #annot(<interaction_hamiltonian>, pos: right, dx: 1em)[#text(
     font: "Open Sans",
-    fill: camDarkBlue,
+    fill: cam-dark-blue,
     weight: "regular",
   )[Interaction]]
   #grid(
@@ -86,14 +86,14 @@
         [
           #scale(
             diagram(
-              node((0, 0), text("System", fill: camSlate4), radius: 3.5em, fill: camBlue),
-              node((1, 1.5), text("Environment", fill: camSlate4), radius: 3.5em, fill: camBlue),
+              node((0, 0), text("System", fill: cam-slate-4), radius: 3.5em, fill: cam-blue),
+              node((1, 1.5), text("Environment", fill: cam-slate-4), radius: 3.5em, fill: cam-blue),
               edge(
                 (0, 0),
                 (1, 1.5),
                 "<|-|>",
                 label: text($hat(H)_"int"$, size: 2em),
-                stroke: stroke(paint: camDarkBlue, thickness: 2pt),
+                stroke: stroke(paint: cam-dark-blue, thickness: 2pt),
               ),
             ),
             40%,
@@ -126,15 +126,15 @@
     column-gutter: 0pt,
     [
       #align(center, diagram(
-        node((1.5, 0.25), radius: 1em, fill: camDarkBlue),
+        node((1.5, 0.25), radius: 1em, fill: cam-dark-blue),
         edge(
           (1.5, 0.25),
           (3, 0.25),
           "-|>",
-          stroke: (paint: camDarkBlue, thickness: 2pt),
+          stroke: (paint: cam-dark-blue, thickness: 2pt),
           label: $F = -frac(d V, d x)$,
         ),
-        edge((0, 0), (3, 1), "-", stroke: camDarkBlue),
+        edge((0, 0), (3, 1), "-", stroke: cam-dark-blue),
       ))
     ],
     [
@@ -147,7 +147,7 @@
           H = frac(p^2, 2m) + U(x) + sum_i (frac(p_i^2, 2) + frac(1, 2) omega_i^2 x_i^2) - mark(x, tag: #<linear_interaction>) sum_i sqrt(gamma_i) x_i
         $  #annot(<linear_interaction>, pos: bottom + left, dy: 16pt, leader-connect: "elbow")[#text(
           font: "Open Sans",
-          stroke: camDarkBlue,
+          stroke: cam-dark-blue,
           weight: "regular",
         )[Linear interaction]]])
     ],
@@ -199,7 +199,7 @@
         ],
         annot(<field_operator>, pos: right, dy: -24pt)[#text(
           font: "Open Sans",
-          fill: camDarkBlue,
+          fill: cam-dark-blue,
           weight: "regular",
         )[Field operator]],
       )
@@ -221,7 +221,7 @@
 
   We can characterize the environment operators in the same way as before
   $
-    #expect($hat(Phi) (t) hat(Phi) (s)$) _e = alpha(t-s) = integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) #markrect($n_b (omega)$, tag: <replaces_kbt>, fill: camLightBlue, stroke: none)exp(i omega (t-s))
+    #expect($hat(Phi) (t) hat(Phi) (s)$) _e = alpha(t-s) = integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) #markrect($n_b (omega)$, tag: <replaces_kbt>, fill: cam-light-blue, stroke: none)exp(i omega (t-s))
   $
 
 ])
@@ -244,14 +244,14 @@
     [
       #scale(
         diagram(
-          edge((0, 0), (2, 0), "-", stroke: (paint: camDarkBlue, thickness: 4pt)),
-          edge((0, 2), (2, 2), "-", stroke: (paint: camDarkBlue, thickness: 4pt)),
+          edge((0, 0), (2, 0), "-", stroke: (paint: cam-dark-blue, thickness: 4pt)),
+          edge((0, 2), (2, 2), "-", stroke: (paint: cam-dark-blue, thickness: 4pt)),
 
           edge(
             (0.2, 0),
             (0.2, 2),
             "-|>",
-            stroke: camDarkBlue,
+            stroke: cam-dark-blue,
             label: $exp(frac(planck omega, k_b T))$,
             label-angle: left,
           ),
@@ -259,7 +259,7 @@
             (1.8, 2),
             (1.8, 0),
             "-|>",
-            stroke: camDarkBlue,
+            stroke: cam-dark-blue,
             label: $exp(-frac(planck omega, k_b T))$,
             label-angle: right,
           ),
@@ -270,9 +270,6 @@
   )
 
 
-
-
-  // TODO: DIAGRAM OF DETAILED BALANCE
   #place(
     bottom + left,
     rect(
@@ -324,7 +321,7 @@
     $
     #annot(<small_delta_x>, pos: top, dy: -12pt, dx: 100pt, leader-connect: "elbow")[#text(
       font: "Open Sans",
-      fill: camDarkBlue,
+      fill: cam-dark-blue,
       weight: "regular",
     )[Small width wavepacket]]
   ])
@@ -373,12 +370,12 @@
             node((0.1, 0.5)),
             node((0.9, 0.5)),
             node((1, 0)),
-            edge((0.1, 0.5), (0.9, 0.5), "-|>-", stroke: camDarkBlue, bend: 60deg),
-            edge((0.1, 0.5), (0.9, 0.5), "-<|-", stroke: camDarkBlue, bend: -60deg),
+            edge((0.1, 0.5), (0.9, 0.5), "-|>-", stroke: cam-dark-blue, bend: 60deg),
+            edge((0.1, 0.5), (0.9, 0.5), "-<|-", stroke: cam-dark-blue, bend: -60deg),
 
-            edge((0.1, 0.5), (0.9, 0.5), "--|>--", stroke: camDarkBlue),
-            edge((0, 0.1), (0.1, 0.5), "--|>--", stroke: camDarkBlue),
-            edge((0.9, 0.5), (1, 0.1), "--|>--", stroke: camDarkBlue),
+            edge((0.1, 0.5), (0.9, 0.5), "--|>--", stroke: cam-dark-blue),
+            edge((0, 0.1), (0.1, 0.5), "--|>--", stroke: cam-dark-blue),
+            edge((0.9, 0.5), (1, 0.1), "--|>--", stroke: cam-dark-blue),
           ),
           200%,
         ),
@@ -421,37 +418,37 @@
         node((0, 0)),
         node((0.1, 0.3)),
         node((0.9, 0.3)),
-        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: camDarkBlue),
-        edge((0, 0), (0.1, 0.3), "--|>--", stroke: camDarkBlue),
-        edge((0.9, 0.3), (1, 0), "--|>--", stroke: camDarkBlue),
+        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
+        edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
+        edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
 
 
-        node((0.5, 0.5), radius: 0.2em, fill: camDarkBlue),
-        node((0.5, 0.8), radius: 0.2em, fill: camDarkBlue),
+        node((0.5, 0.5), radius: 0.2em, fill: cam-dark-blue),
+        node((0.5, 0.8), radius: 0.2em, fill: cam-dark-blue),
 
-        edge((0.1, 0.3), (0.5, 0.5), "-|>-", stroke: camDarkBlue),
-        edge((0.5, 0.5), (0.9, 0.3), "-|>-", stroke: camDarkBlue),
-        edge((0.5, 0.5), (0.5, 0.8), "~", stroke: camDarkBlue),
-        edge((0.1, 0.3), (0.5, 0.8), "-<|-", stroke: camDarkBlue, bend: -30deg),
-        edge((0.5, 0.8), (0.9, 0.3), "-<|-", stroke: camDarkBlue, bend: -30deg),
+        edge((0.1, 0.3), (0.5, 0.5), "-|>-", stroke: cam-dark-blue),
+        edge((0.5, 0.5), (0.9, 0.3), "-|>-", stroke: cam-dark-blue),
+        edge((0.5, 0.5), (0.5, 0.8), "~", stroke: cam-dark-blue),
+        edge((0.1, 0.3), (0.5, 0.8), "-<|-", stroke: cam-dark-blue, bend: -30deg),
+        edge((0.5, 0.8), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -30deg),
       ),
 
       diagram(
         node((0, 0)),
         node((0.1, 0.3)),
         node((0.9, 0.3)),
-        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: camDarkBlue),
-        edge((0, 0), (0.1, 0.3), "--|>--", stroke: camDarkBlue),
-        edge((0.9, 0.3), (1, 0), "--|>--", stroke: camDarkBlue),
+        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
+        edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
+        edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
 
-        node((0.2, 0.7), radius: 0.2em, fill: camDarkBlue),
-        node((0.8, 0.7), radius: 0.2em, fill: camDarkBlue),
+        node((0.2, 0.7), radius: 0.2em, fill: cam-dark-blue),
+        node((0.8, 0.7), radius: 0.2em, fill: cam-dark-blue),
 
-        edge((0.1, 0.3), (0.2, 0.7), "-|>-", stroke: camDarkBlue, bend: 60deg),
-        edge((0.8, 0.7), (0.9, 0.3), "-|>-", stroke: camDarkBlue, bend: 60deg),
-        edge((0.2, 0.7), (0.8, 0.7), "~", stroke: camDarkBlue),
-        edge((0.1, 0.3), (0.2, 0.7), "-<|-", stroke: camDarkBlue, bend: -60deg),
-        edge((0.8, 0.7), (0.9, 0.3), "-<|-", stroke: camDarkBlue, bend: -60deg),
+        edge((0.1, 0.3), (0.2, 0.7), "-|>-", stroke: cam-dark-blue, bend: 60deg),
+        edge((0.8, 0.7), (0.9, 0.3), "-|>-", stroke: cam-dark-blue, bend: 60deg),
+        edge((0.2, 0.7), (0.8, 0.7), "~", stroke: cam-dark-blue),
+        edge((0.1, 0.3), (0.2, 0.7), "-<|-", stroke: cam-dark-blue, bend: -60deg),
+        edge((0.8, 0.7), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -60deg),
       ),
     ),
   )
@@ -477,13 +474,13 @@
 
   #annot(<hermitian_process>, pos: bottom + left, dy: 24pt, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    fill: camDarkBlue,
+    fill: cam-dark-blue,
     weight: "regular",
   )[Hermitian random process]]
 
   #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-connect: "elbow")[#text(
     font: "Open Sans",
-    fill: camDarkBlue,
+    fill: cam-dark-blue,
     weight: "regular",
   )[Correlation Function]]
   #place(
