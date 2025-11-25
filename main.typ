@@ -505,11 +505,6 @@
     ),
   )
 
-
-
-
-
-
 ])
 
 
@@ -561,6 +556,92 @@
 
 
 ])
+
+#slide(type: "light", [
+  == Master Equations and Field Operators
+
+  The characterization of field operators is not just useful for
+  comparing environments - they show up in the master equations!
+
+  They also show up as memory in the stochastic Schrodinger equation [1]
+  $
+    partial_t#(ket($psi$)) = -i hat(A) (
+      mark(phi(t), tag: #<hermitian_process>) + integral_0^t d s mark(G(t-s), tag: #<correllation>) frac(delta, delta phi(s))
+    )ket(psi)
+  $
+
+  #annot(
+    <hermitian_process>,
+    pos: bottom + left,
+    dy: 24pt,
+    leader-stroke: cam-dark-blue,
+    leader-connect: "elbow",
+  )[#text(
+    font: "Open Sans",
+    fill: cam-dark-blue,
+    weight: "regular",
+  )[Hermitian random process]]
+
+  #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-stroke: cam-dark-blue, leader-connect: "elbow")[#text(
+    font: "Open Sans",
+    fill: cam-dark-blue,
+    weight: "regular",
+  )[Correlation Function]]
+  #place(
+    bottom + left,
+    rect(
+      fill: none,
+      stroke: none,
+      inset: 8pt,
+      width: 100%,
+      [
+        #set text(size: 8pt)
+        #set par(leading: 0.5em)
+
+        *[1]* L. Diosi and L. Ferialdi, “General Non-Markovian Structure of Gaussian Master and Stochastic Schrodinger Equations” Phys.Rev.Lett. 113 (2014) 200403-(5).
+      ],
+    ),
+  )
+
+
+])
+
+
+#slide(type: "light", [
+  == Temperature Corrected Models
+
+  Since classical environments with $gamma(omega) = frac(2 m lambda omega^2, pi)$ have
+  $G(t - t') != delta(t-t')$ our stochastic equation has memory
+  $
+    partial_t#(ket($psi$)) = -i hat(A) (
+      mark(phi(t), tag: #<hermitian_process>) + integral_0^t d s mark(G(t-s), tag: #<correllation>) frac(delta, delta phi(s))
+    )ket(psi)
+  $
+  when we simulate diffusion of quantum systems we use a temperature corrected model which is markovian
+  #annot(
+    <hermitian_process>,
+    pos: bottom + left,
+    dy: 24pt,
+    leader-stroke: cam-dark-blue,
+    leader-connect: "elbow",
+  )[#text(
+    font: "Open Sans",
+    fill: cam-dark-blue,
+    weight: "regular",
+  )[Hermitian random process]]
+  #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-stroke: cam-dark-blue, leader-connect: "elbow")[#text(
+    font: "Open Sans",
+    fill: cam-dark-blue,
+    weight: "regular",
+  )[Correlation Function]]
+
+  The Caldeira Leggett master equation usually refers to this corrected model,
+  which is valid at "finite temperatures"
+
+
+])
+
+
 #slide(type: "alt1", [
   == Conclusion
 
