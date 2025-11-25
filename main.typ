@@ -1,5 +1,7 @@
 #import "@preview/polylux:0.4.0": slide as plSlide, toolbox
-#import "./cambridge_polylux_theme/lib.typ": cam-blue, cam-dark-blue, cam-light-blue, cam-slate-4, logo, slide
+#import "./cambridge_polylux_theme/lib.typ": (
+  cam-blue, cam-dark-blue, cam-light-blue, cam-slate-2, cam-slate-4, logo, slide,
+)
 #import "@preview/mannot:0.3.1": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 
@@ -33,13 +35,14 @@
   When we model classical diffusion we don't deal with the environment
   directly - we treat interactions as a random process
 
-  - Classically, these interactions appear as a stochastic
+  - These interactions appear as a stochastic
     force and deterministic damping felt by the particle
-  - Can we characterize the effect of a quantum environment,
-    and what effect does it have on the system?
-  - What does the process of characterizing a real environment look like,
-    for this we will need to use field theory
-  - How does this relate to the "Quantum Master Equation" description
+  - We will discuss how to extend this idea to quantum systems - how
+    can we characterize the effect of a quantum environment?
+  - Characterizing a real environment cannot be
+    done exactly - we will highlight where quantum field theory
+    can simplify the problem
+  - We will relate this back to the "Quantum Master Equation" description
 
 ]
 
@@ -49,21 +52,35 @@
   A general quantum system is described by a Hamiltonian $hat(H)$ which can be split into three parts
   $
     hat(H) =
-    mark(hat(H)_s, tag: #<system_hamiltonian>, color: #cam-dark-blue)
+    mark(hat(H)_s, tag: #<system_hamiltonian>)
     +
-    mark(hat(H)_e, tag: #<environment_hamiltonian>, color: #cam-dark-blue)
+    mark(hat(H)_e, tag: #<environment_hamiltonian>)
     +
-    mark(hat(H)_"int", tag: #<interaction_hamiltonian>, color: #cam-dark-blue)
+    mark(hat(H)_"int", tag: #<interaction_hamiltonian>)
   $
-  #annot(<system_hamiltonian>, pos: bottom + left, dx: -4em, dy: -0.3em, leader-connect: "elbow")[#text(
+  #annot(
+    <system_hamiltonian>,
+    pos: bottom + left,
+    dx: -4em,
+    dy: -0.3em,
+    leader-stroke: cam-dark-blue,
+    leader-connect: "elbow",
+  )[#text(
     font: "Open Sans",
     fill: cam-dark-blue,
   )[System]]
-  #annot(<environment_hamiltonian>, pos: top + left, dy: -0.4em, dx: -1em, leader-connect: "elbow")[#text(
+  #annot(
+    <environment_hamiltonian>,
+    pos: top + left,
+    dy: -0.4em,
+    dx: -1em,
+    leader-connect: "elbow",
+    leader-stroke: cam-dark-blue,
+  )[#text(
     font: "Open Sans",
     fill: cam-dark-blue,
   )[Environment]]
-  #annot(<interaction_hamiltonian>, pos: right, dx: 1em)[#text(
+  #annot(<interaction_hamiltonian>, pos: right, dx: 1em, leader-stroke: cam-dark-blue)[#text(
     font: "Open Sans",
     fill: cam-dark-blue,
     weight: "regular",
@@ -74,7 +91,7 @@
       $hat(H)_"int"$ can describe a
       very complex interaction - we can't keep track of these processes explicitly
 
-      We can replace the microscopic description of interactions
+      We can replace the microscopic description of the environment
       with a stochastic process
     ],
     [
@@ -145,9 +162,15 @@
         // $
         $
           H = frac(p^2, 2m) + U(x) + sum_i (frac(p_i^2, 2) + frac(1, 2) omega_i^2 x_i^2) - mark(x, tag: #<linear_interaction>) sum_i sqrt(gamma_i) x_i
-        $  #annot(<linear_interaction>, pos: bottom + left, dy: 16pt, leader-connect: "elbow")[#text(
+        $  #annot(
+          <linear_interaction>,
+          pos: bottom + left,
+          dy: 16pt,
+          leader-stroke: cam-dark-blue,
+          leader-connect: "elbow",
+        )[#text(
           font: "Open Sans",
-          stroke: cam-dark-blue,
+          fill: cam-dark-blue,
           weight: "regular",
         )[Linear interaction]]])
     ],
@@ -168,6 +191,8 @@
       #set text(size: 14pt)
       $
         #ket($Psi$)arrow.r.double exp(frac(i t, planck) (hat(H)_s + hat(H)_e)) #ket($Psi$)
+        quad
+        hat(O) arrow.r.double exp(frac(i t, planck) (hat(H)_s + hat(H)_e)) hat(O) exp(-frac(i t, planck) (hat(H)_s + hat(H)_e))
         quad
         i planck partial_t#(ket($Psi(t)$)) = hat(H)_"int" ("t")#ket($Psi(t)$)
       $],
@@ -197,7 +222,7 @@
             expect(hat(Phi)_i (t) hat(Phi)_j (s))_e = G_(i,j) (t-s)
           $
         ],
-        annot(<field_operator>, pos: right, dy: -24pt)[#text(
+        annot(<field_operator>, pos: right, leader-stroke: cam-dark-blue, dy: -24pt)[#text(
           font: "Open Sans",
           fill: cam-dark-blue,
           weight: "regular",
@@ -221,7 +246,11 @@
 
   We can characterize the environment operators in the same way as before
   $
-    #expect($hat(Phi) (t) hat(Phi) (s)$) _e = alpha(t-s) = integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) #markrect($n_b (omega)$, tag: <replaces_kbt>, fill: cam-light-blue, stroke: none)exp(i omega (t-s))
+    #expect($hat(Phi) (t) hat(Phi) (s)$) _e
+    =
+    alpha(t-s)
+    =
+    integral_(-infinity)^infinity d omega frac(planck, omega) gamma(omega) #markrect($n_b (omega)$, tag: <replaces_kbt>, fill: cam-blue.transparentize(80%), stroke: none)exp(i omega (t-s))
   $
 
 ])
@@ -319,7 +348,14 @@
     $
       expect(hat(Phi)(x,t)hat(Phi)(x',t'))_e = -frac(1, 4) mark(|x - x'|^2, tag: #<small_delta_x>) alpha(t-t')
     $
-    #annot(<small_delta_x>, pos: top, dy: -12pt, dx: 100pt, leader-connect: "elbow")[#text(
+    #annot(
+      <small_delta_x>,
+      pos: top,
+      dy: -12pt,
+      dx: 100pt,
+      leader-stroke: cam-dark-blue,
+      leader-connect: "elbow",
+    )[#text(
       font: "Open Sans",
       fill: cam-dark-blue,
       weight: "regular",
@@ -336,13 +372,25 @@
   $
     hat(H) = sum_k epsilon_k hat(c)_k^dagger hat(c)_k + sum_q planck omega_q hat(b)_q^dagger hat(b)_q + sum_(k, q) M_(k, q) (hat(b)_(-q)^dagger + hat(b)_q) hat(c)_(k+q)^dagger hat(c)_k
   $
-  // TODO: Annotate terms
   The electrons will also scatter off an adsorbate
-  $
-    hat(H)_"int" = integral_x hat(rho)_s (x) sum_(k, k') exp(i(q_k - q_(k'))x) tilde(V)(k- k') hat(c)_k^dagger hat(c)_(k')
-  $
+  #[
+    #set text(size: 20pt)
+    $
+      hat(H)_"int" = integral_x d x hat(rho)_s (x) markrect(sum_(k, k') exp(i(q_k - q_(k'))x) tilde(V)(k- k') hat(c)_k^dagger hat(c)_(k'), tag: #<electron_scattering_field>, fill: #cam-blue.transparentize(80%), stroke: #none)
+    $
+    #annot(
+      <electron_scattering_field>,
+      [The field operator $hat(phi)(x)$],
+      pos: top + right,
+      leader-stroke: cam-dark-blue,
+      leader-connect: "elbow",
+      dy: -10pt,
+    )
+    From here we transform into the interaction picture, and characterize the environment
+  ]
 
-  From here we can identify the field operators, and characterize the environment
+
+
 
 ])
 #slide(type: "light", [
@@ -351,12 +399,12 @@
   #grid(
     columns: (75%, 25%),
     [
-      If we ignore interactions, there is only a single process which contributes
+      If we ignore interactions, we can write down $hat(phi)(x, t)$
+      $
+        hat(c)_k^dagger hat(c)_(k') arrow.double.r hat(c)_k^dagger hat(c)_(k')exp(i (epsilon_k - epsilon_(k')) t / planck)
+      $
 
       At low temperatures, scattering only happens in a thin shell around the fermi surface
-
-
-
 
     ],
     [
@@ -393,14 +441,15 @@
 #slide(type: "light", [
   == Second Order
   #box(
-    width: 75%,
+    width: 68%,
     [
-      Including electron-phonon interactions is more difficult
+      It is impossible to find $hat(phi)(x, t)$ exactly
+      if we include the electron-phonon interaction in $hat(H)_e$
 
-      We need to make use of perturbation theory to expand in
-      orders of the interaction Hamiltonian
+      We can use quantum field theory to go beyond zeroth order by expanding
+      about zero interaction
 
-      These contributions lead to non ohmic friction - memory is stored as displacement of the lattice
+      These contributions lead to non ohmic friction - memory is stored as displacement
     ],
   )
 
@@ -411,45 +460,48 @@
     top + center,
     dx: 12em,
     dy: 2.5em,
-    stack(
-      dir: ttb,
-      spacing: 1em,
-      diagram(
-        node((0, 0)),
-        node((0.1, 0.3)),
-        node((0.9, 0.3)),
-        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
-        edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
-        edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
+    scale(
+      stack(
+        dir: ttb,
+        spacing: 1em,
+        diagram(
+          node((0, 0)),
+          node((0.1, 0.3)),
+          node((0.9, 0.3)),
+          edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
+          edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
+          edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
 
 
-        node((0.5, 0.5), radius: 0.2em, fill: cam-dark-blue),
-        node((0.5, 0.8), radius: 0.2em, fill: cam-dark-blue),
+          node((0.5, 0.5), radius: 0.2em, fill: cam-dark-blue),
+          node((0.5, 0.8), radius: 0.2em, fill: cam-dark-blue),
 
-        edge((0.1, 0.3), (0.5, 0.5), "-|>-", stroke: cam-dark-blue),
-        edge((0.5, 0.5), (0.9, 0.3), "-|>-", stroke: cam-dark-blue),
-        edge((0.5, 0.5), (0.5, 0.8), "~", stroke: cam-dark-blue),
-        edge((0.1, 0.3), (0.5, 0.8), "-<|-", stroke: cam-dark-blue, bend: -30deg),
-        edge((0.5, 0.8), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -30deg),
+          edge((0.1, 0.3), (0.5, 0.5), "-|>-", stroke: cam-dark-blue),
+          edge((0.5, 0.5), (0.9, 0.3), "-|>-", stroke: cam-dark-blue),
+          edge((0.5, 0.5), (0.5, 0.8), "~", stroke: cam-dark-blue),
+          edge((0.1, 0.3), (0.5, 0.8), "-<|-", stroke: cam-dark-blue, bend: -30deg),
+          edge((0.5, 0.8), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -30deg),
+        ),
+
+        diagram(
+          node((0, 0)),
+          node((0.1, 0.3)),
+          node((0.9, 0.3)),
+          edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
+          edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
+          edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
+
+          node((0.2, 0.7), radius: 0.2em, fill: cam-dark-blue),
+          node((0.8, 0.7), radius: 0.2em, fill: cam-dark-blue),
+
+          edge((0.1, 0.3), (0.2, 0.7), "-|>-", stroke: cam-dark-blue, bend: 60deg),
+          edge((0.8, 0.7), (0.9, 0.3), "-|>-", stroke: cam-dark-blue, bend: 60deg),
+          edge((0.2, 0.7), (0.8, 0.7), "~", stroke: cam-dark-blue),
+          edge((0.1, 0.3), (0.2, 0.7), "-<|-", stroke: cam-dark-blue, bend: -60deg),
+          edge((0.8, 0.7), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -60deg),
+        ),
       ),
-
-      diagram(
-        node((0, 0)),
-        node((0.1, 0.3)),
-        node((0.9, 0.3)),
-        edge((0.1, 0.3), (0.9, 0.3), "--|>--", stroke: cam-dark-blue),
-        edge((0, 0), (0.1, 0.3), "--|>--", stroke: cam-dark-blue),
-        edge((0.9, 0.3), (1, 0), "--|>--", stroke: cam-dark-blue),
-
-        node((0.2, 0.7), radius: 0.2em, fill: cam-dark-blue),
-        node((0.8, 0.7), radius: 0.2em, fill: cam-dark-blue),
-
-        edge((0.1, 0.3), (0.2, 0.7), "-|>-", stroke: cam-dark-blue, bend: 60deg),
-        edge((0.8, 0.7), (0.9, 0.3), "-|>-", stroke: cam-dark-blue, bend: 60deg),
-        edge((0.2, 0.7), (0.8, 0.7), "~", stroke: cam-dark-blue),
-        edge((0.1, 0.3), (0.2, 0.7), "-<|-", stroke: cam-dark-blue, bend: -60deg),
-        edge((0.8, 0.7), (0.9, 0.3), "-<|-", stroke: cam-dark-blue, bend: -60deg),
-      ),
+      150%,
     ),
   )
 
@@ -469,16 +521,24 @@
 
   They also show up as memory in the stochastic Schrodinger equation [1]
   $
-    partial_t ket(psi) = -i hat(A) ( mark(phi(t), tag: #<hermitian_process>) + integral_0^t d s mark(G(t-s), tag: #<correllation>) frac(delta, delta phi(s))) ket(psi)
+    partial_t#(ket($psi$)) = -i hat(A) (
+      mark(phi(t), tag: #<hermitian_process>) + integral_0^t d s mark(G(t-s), tag: #<correllation>) frac(delta, delta phi(s))
+    )ket(psi)
   $
 
-  #annot(<hermitian_process>, pos: bottom + left, dy: 24pt, leader-connect: "elbow")[#text(
+  #annot(
+    <hermitian_process>,
+    pos: bottom + left,
+    dy: 24pt,
+    leader-stroke: cam-dark-blue,
+    leader-connect: "elbow",
+  )[#text(
     font: "Open Sans",
     fill: cam-dark-blue,
     weight: "regular",
   )[Hermitian random process]]
 
-  #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-connect: "elbow")[#text(
+  #annot(<correllation>, pos: bottom + right, dy: 24pt, leader-stroke: cam-dark-blue, leader-connect: "elbow")[#text(
     font: "Open Sans",
     fill: cam-dark-blue,
     weight: "regular",

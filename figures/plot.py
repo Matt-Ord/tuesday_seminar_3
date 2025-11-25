@@ -89,7 +89,7 @@ def plot_signal() -> None:
     ax.tick_params(
         axis="both", which="both", length=0, labelleft=False, labelbottom=False
     )
-    # ax.set_xlabel("Time", fontsize=32)
+    ax.set_xlabel("Time", fontsize=32)
     ax.set_ylabel(r"$\hat{\Phi}(t)$", rotation="horizontal", fontsize=32, ha="right")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
